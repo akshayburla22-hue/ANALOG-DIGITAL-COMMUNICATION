@@ -1,0 +1,28 @@
+clc;
+clear;
+close all;
+Am=1;
+fm=500;
+Ac=5;
+fc=5000;
+fs=20*fc;
+t=0:1/fs:4/fm;
+m = Am*sin(2*pi*fm*t);
+c = Ac*sin(2*pi*fc*t);
+mu = Am/Ac;
+am = Ac*(1+mu*sin(2*pi*fm*t)).*sin(2*pi*fc*t);
+dem = abs(hilbert(am)); dem = dem-mean(dem);
+N=length(am); f=linspace(-fs/2,fs/2,N);
+AM_FFT=abs(fftshift(fft(am)))/N;
+USB=fc+fm; LSB=fc-fm;
+Pc=Ac^2/2; Psb=(mu^2*Pc)/4;
+figure('Name','AM Modulation','NumberTitle','off');
+subplot(3,2,1), plot(t,m), title('Message'), grid on
+subplot(3,2,2), plot(t,c), title('Carrier'), grid on
+subplot(3,2,3), plot(t,am), title('AM Signal'), grid on
+subplot(3,2,4), plot(t,dem), title('Demodulated'), grid on
+subplot(3,2,5), plot(f,AM_FFT), xlim([fc-3*fm fc+3*fm]), title('Sidebands'), grid on
+subplot(3,2,6), bar([Pc Psb Psb]), set(gca,'XTickLabel',{'Carrier','USB','LSB'}),
+title('Power'), grid on
+fprintf('μ=%.2f | USB=%d Hz | LSB=%d Hz | Pc=%.2f W | Psb=%.3f
+W\n',mu,USB,LSB,Pc,Psb);
