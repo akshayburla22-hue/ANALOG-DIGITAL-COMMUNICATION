@@ -1,0 +1,57 @@
+% Calculation and Verification of Frequency Deviation
+% and Modulation Index of FM Signal
+clc;
+clear;
+close all;
+%% Message Signal Parameters
+Am = 2; % Message amplitude (V)
+fm = 500; % Message frequency (Hz)
+%% Carrier Signal Parameters
+Ac = 1; % Carrier amplitude (V)
+fc = 10000; % Carrier frequency (Hz)
+%% FM Parameters
+kf = 250; % Frequency sensitivity (Hz/V)
+fs = 100000; % Sampling frequency (Hz)
+T = 0.01; % Simulation duration (s)
+%% Time Vector
+t = 0:1/fs:T;
+%% Message Signal
+m = Am*cos(2*pi*fm*t);
+%% Frequency Deviation
+delta_f = kf*Am;
+%% Modulation Index
+beta = delta_f/fm;
+%% FM Signal
+fm_signal = Ac*cos(2*pi*fc*t + beta*sin(2*pi*fm*t));
+%% Display Parameters
+fprintf('Carrier Frequency (fc) = %.0f Hz\n',fc);
+fprintf('Message Frequency (fm) = %.0f Hz\n',fm);
+fprintf('Message Amplitude (Am) = %.0f V\n',Am);
+fprintf('Frequency Sensitivity (kf) = %.0f Hz/V\n',kf);
+fprintf('\nFrequency Deviation (Delta f) = %.2f Hz\n',delta_f);
+fprintf('Modulation Index (Beta) = %.2f\n',beta);
+%% Verification
+beta_verify = delta_f/fm;
+fprintf('Verified Modulation Index = %.2f\n',beta_verify);
+%% Verification Check
+
+tolerance = 1e-6;
+if abs(beta - beta_verify) < tolerance
+    fprintf('\nVerification Successful\n');
+else
+    fprintf('\nVerification Failed\n');
+end
+%% Plotting
+figure;
+subplot(2,1,1);
+plot(t,m,'LineWidth',1.5);
+grid on;
+title('Message Signal');
+xlabel('Time (s)');
+ylabel('Amplitude (V)');
+subplot(2,1,2);
+plot(t,fm_signal,'LineWidth',1);
+grid on;
+title('FM Signal');
+xlabel('Time (s)');
+ylabel('Amplitude (V)');
