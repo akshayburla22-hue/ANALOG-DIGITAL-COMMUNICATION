@@ -1,0 +1,48 @@
+clc;
+clear;
+close all;
+% Parameters
+fs = 100000;
+t = 0:1/fs:0.02;
+fm = 500; % Message frequency
+fc = 10000; % Carrier frequency
+fLO = 14550; % Local Oscillator (IF = 4550 Hz)
+% Message Signal
+m = cos(2*pi*fm*t);
+% Carrier Signal
+c = cos(2*pi*fc*t);
+% AM Signal
+am = (1 + m).*cos(2*pi*fc*t);
+% Local Oscillator
+LO = cos(2*pi*fLO*t);
+% Frequency Mixing
+mixed = am .* LO;
+% IF Filter
+[b,a] = butter(4,5000/(fs/2));
+IF = filter(b,a,mixed);
+% Envelope Detection
+env = abs(hilbert(IF));
+% Display
+figure;
+subplot(4,1,1)
+plot(t,m)
+title('Message Signal')
+
+grid on
+figure;
+subplot(5,1,2)
+plot(t,c)
+title('Carrier Signal')
+grid on
+subplot(5,1,3)
+plot(t,am)
+title('AM Signal')
+grid on
+subplot(5,1,4)
+plot(t,IF)
+title('Intermediate Frequency (IF) Signal')
+grid on
+subplot(5,1,5)
+plot(t,env)
+title('Recovered Signal')
+grid on
