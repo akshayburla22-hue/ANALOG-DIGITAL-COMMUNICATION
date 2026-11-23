@@ -1,0 +1,31 @@
+
+clc;
+clear;
+close all;
+
+% Processing Gain
+Rb = 1000;          % Data Rate (bps)
+Rc = 10000;         % Chip Rate (chips/s)
+
+PG = Rc/Rb;
+PG_dB = 10*log10(PG);
+
+fprintf('Processing Gain = %.2f\n', PG);
+fprintf('Processing Gain (dB) = %.2f dB\n', PG_dB);
+
+% Generate PN Sequence
+% 31-bit PN sequence
+pn = randi([0 1],1,31);
+
+% Display
+disp('PN Sequence:');
+disp(pn);
+
+% Plot
+figure;
+stem(pn,'filled');
+title('Pseudo Noise (PN) Sequence');
+xlabel('Chip Number');
+ylabel('Chip Value');
+grid on;
+
