@@ -1,0 +1,46 @@
+
+clc;
+clear;
+close all;
+
+% Parameters
+M = 16;                     % 16-QAM
+N = 1000;                   % Number of symbols
+
+data = randi([0 M-1],N,1);
+
+% QAM Modulation
+tx = qammod(data,M,'UnitAveragePower',true);
+
+% AWGN Channel
+rx = awgn(tx,10,'measured');    % 10 dB SNR
+
+% Demodulation
+data_rx = qamdemod(rx,M,'UnitAveragePower',true);
+
+% BER Calculation
+[num, ber] = biterr(data,data_rx);
+
+% Display BER
+fprintf('Bit Error Rate (BER) = %f\n',ber);
+
+% Eye Diagram Signal
+eyeSig = repelem(real(rx),8);
+
+% Plots
+figure;
+
+subplot(2,2,1)
+scatter(real(tx),imag(tx),'filled')
+title('16-QAM Transmitted Constellation')
+grid on
+
+subplot(2,2,2)
+scatter(real(rx),imag(rx),'filled')
+title('Received Constellation (AWGN)')
+grid on
+
+subplot(2,2,[3 4])
+eyediagram(eyeSig,16)
+title('Eye Diagram')
+
