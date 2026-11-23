@@ -1,0 +1,35 @@
+
+clc;
+clear;
+close all;
+
+% Four GSM Users
+u1 = [1 0 1 1];
+u2 = [0 1 0 1];
+u3 = [1 1 0 0];
+u4 = [0 0 1 1];
+
+% TDMA Frame
+tdma = [u1 u2 u3 u4];
+
+% Display
+disp('TDMA Frame:');
+disp(tdma);
+
+% Plot
+figure;
+
+subplot(2,1,1)
+stem(tdma,'filled')
+title('GSM TDMA Frame')
+xlabel('Time Slot')
+ylabel('Bit')
+grid on
+
+subplot(2,1,2)
+stairs(tdma,'LineWidth',1.5)
+title('TDMA Signal')
+xlabel('Time Slot')
+ylabel('Amplitude')
+grid on
+
