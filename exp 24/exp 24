@@ -1,0 +1,47 @@
+
+clc;
+clear;
+close all;
+
+% Parameters
+N = 1000;
+bits = randi([0 1],N,1);
+
+% BPSK Modulation
+tx = 2*bits - 1;
+
+% Multipath Fading Channel
+h = [1 0.5 0.3];
+fade = filter(h,1,tx);
+
+% Add AWGN
+rx = awgn(fade,10,'measured');
+
+% Detection
+bits_rx = rx > 0;
+
+% BER Calculation
+[~, BER] = biterr(bits,bits_rx);
+
+fprintf('BER = %f\n',BER);
+
+% Plots
+figure;
+
+subplot(3,1,1)
+plot(tx)
+title('Transmitted BPSK Signal')
+grid on
+
+subplot(3,1,2)
+plot(rx)
+title('Received Signal (Multipath + AWGN)')
+grid on
+
+subplot(3,1,3)
+stem(bits(1:50),'b')
+hold on
+stem(bits_rx(1:50),'r')
+title(['BER = ' num2str(BER)])
+legend('Original','Detected')
+grid on
