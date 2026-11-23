@@ -1,0 +1,47 @@
+
+clc;
+clear;
+close all;
+
+% Parameters
+fs = 100000;
+t = 0:1/fs:0.02;
+fm = 500;          % Message frequency
+fc = 5000;         % Carrier frequency
+kf = 100;          % Frequency sensitivity
+
+% Message Signal
+m = cos(2*pi*fm*t);
+
+% Carrier Signal
+c = cos(2*pi*fc*t);
+
+% FM Modulation
+fm_sig = cos(2*pi*fc*t + 2*pi*kf*cumsum(m)/fs);
+
+% Add Gaussian White Noise
+noisy = awgn(fm_sig,10,'measured');
+
+% Display
+figure;
+
+subplot(4,1,1);
+plot(t,m);
+title('Message Signal');
+grid on;
+
+subplot(4,1,2);
+plot(t,c);
+title('Carrier Signal');
+grid on;
+
+subplot(4,1,3);
+plot(t,fm_sig);
+title('FM Signal');
+grid on;
+
+subplot(4,1,4);
+plot(t,noisy);
+title('FM Signal with Gaussian White Noise');
+grid on;
+
