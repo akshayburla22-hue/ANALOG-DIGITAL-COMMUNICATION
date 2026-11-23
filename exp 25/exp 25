@@ -1,0 +1,35 @@
+
+clc;
+clear;
+close all;
+
+% Input Bits
+data = randi([0 1],20,1);
+
+% Convolutional Encoder (Rate 1/2, Constraint Length = 3)
+trellis = poly2trellis(3,[7 5]);
+encoded = convenc(data,trellis);
+
+% Display
+disp('Input Bits:');
+disp(data');
+
+disp('Encoded Bits:');
+disp(encoded');
+
+% Plot
+figure;
+
+subplot(2,1,1)
+stem(data,'filled')
+title('Input Bit Sequence')
+xlabel('Bit Index')
+ylabel('Bit Value')
+grid on
+
+subplot(2,1,2)
+stem(encoded,'filled')
+title('Convolutionally Encoded Bit Sequence')
+xlabel('Bit Index')
+ylabel('Bit Value')
+grid on
