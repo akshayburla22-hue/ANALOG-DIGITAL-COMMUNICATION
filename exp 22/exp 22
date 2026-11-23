@@ -1,0 +1,31 @@
+
+clc;
+clear;
+close all;
+
+% Generate Random Bits
+N = 100;
+bits = randi([0 1],N,1);
+
+% BPSK Modulation
+bpsk = 2*bits - 1;      % 0 -> -1, 1 -> +1
+
+% Add AWGN Noise
+rx = awgn(bpsk,10,'measured');
+
+% Constellation Diagram
+figure;
+
+subplot(2,1,1)
+stem(bits)
+title('Input Binary Data')
+grid on
+
+subplot(2,1,2)
+scatter(real(rx), imag(rx),'filled')
+title('BPSK Constellation Diagram')
+xlabel('In-Phase')
+ylabel('Quadrature')
+grid on
+axis([-2 2 -2 2])
+
