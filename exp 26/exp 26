@@ -1,0 +1,44 @@
+
+clc;
+clear;
+close all;
+
+% (7,4) Hamming Code
+msg = [1 0 1 1];
+
+% Encode
+code = encode(msg,7,4,'hamming/binary');
+
+% Introduce Single-Bit Error
+rx = code;
+rx(3) = ~rx(3);      % Flip one bit
+
+% Decode and Correct Error
+dec = decode(rx,7,4,'hamming/binary');
+
+% Display Results
+disp('Message Bits:')
+disp(msg)
+
+disp('Encoded Bits:')
+disp(code)
+
+disp('Received Bits (with error):')
+disp(rx)
+
+disp('Corrected Message:')
+disp(dec)
+
+% Plot
+figure;
+
+subplot(2,1,1)
+stem(code,'filled')
+title('Encoded Codeword')
+grid on
+
+subplot(2,1,2)
+stem(rx,'filled')
+title('Received Codeword with Single-Bit Error')
+grid on
+
