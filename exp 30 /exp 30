@@ -1,0 +1,40 @@
+
+clc;
+clear;
+close all;
+
+% Cell Centers (3 Cells)
+cellPos = [0 500 1000];
+
+% User Movement
+user = 0:10:1000;
+
+% Nearest Cell Selection (Handover)
+handover = zeros(size(user));
+
+for i = 1:length(user)
+    [~,handover(i)] = min(abs(user(i)-cellPos));
+end
+
+% Display
+disp('User Position    Connected Cell')
+disp([user' handover'])
+
+% Plot
+figure;
+
+subplot(2,1,1)
+plot(user,handover,'b','LineWidth',2)
+title('Handover Performance')
+xlabel('User Position (m)')
+ylabel('Cell Number')
+grid on
+
+subplot(2,1,2)
+stem(cellPos,[1 2 3],'filled')
+hold on
+plot(user,ones(size(user))*2,'r--')
+title('Cellular Frequency Planning')
+xlabel('Distance (m)')
+ylabel('Cell')
+grid on
